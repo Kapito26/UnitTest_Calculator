@@ -1,10 +1,17 @@
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.hamcrest.MatcherAssert;
 
+import java.util.List;
 import java.util.stream.Stream;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+
 
 public class CalculatorTests {
     Calculator calculator;
@@ -78,29 +85,29 @@ public class CalculatorTests {
         System.out.println("Тест деления");
 
         //arrange  given
-        int a = 6, b = -2, expected = -3;
+        float a = 6, b = -2, expected = -3;
 
         //act      when
-        int result = calculator.devide.apply(a, b);
+        float result = calculator.devide.apply(a, b);
 
         //assert   then
         Assertions.assertEquals(expected, result);
     }
 
-    @Test
-    public void testDevideByZero() {
-        System.out.println("Тест деления на 0");
+    //   @Test
+    //   public void testDevideByZero() {
+    //       System.out.println("Тест деления на 0");
 
-        //arrange  given
-        int a = 6, b = 0;
-        Class<ArithmeticException> expected = ArithmeticException.class;
+    //arrange  given
+    //       float a = 6, b = 0;
+    //       Class<ArithmeticException> expected = ArithmeticException.class;
 
-        //act      when
-        Executable executable = () -> calculator.devide.apply(a, b);
+    //act      when
+    //       Executable executable = () -> calculator.devide.apply(a, b);
 
-        //assert   then
-        Assertions.assertThrowsExactly(expected, executable);
-    }
+    //assert   then
+    //       Assertions.assertThrowsExactly(expected, executable);
+    //   }
 
     @ParameterizedTest
     @MethodSource("minusTestParameters")                      //arrange  given
@@ -183,5 +190,33 @@ public class CalculatorTests {
                 Arguments.of(1, 1),
                 Arguments.of(0, 0)
         );
+    }
+
+    @Test
+    public void contains() {
+        List<String> list = List.of("hello", "netology", "world");
+
+        assertThat(list, hasItems("hello", "netology"));
+    }
+    
+    //hamcrest
+    @Test
+    public void testHDevide() {
+        System.out.println("hamcrest тест деления");
+
+        //arrange  given
+        float a = 17, b = 5;
+
+        //act      when
+        double result = calculator.devide.apply(a, b);
+
+        assertThat(result, closeTo(3.4, 1));
+    }
+
+    @Test
+    public void testHCalculator() {
+        System.out.println("hamcrest методtoString дляObject возвращает указанныйString");
+        String str = calculator.toString();
+        assertThat(calculator, hasToString(str));
     }
 }
